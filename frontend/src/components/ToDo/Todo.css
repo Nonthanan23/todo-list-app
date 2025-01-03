@@ -1,0 +1,29 @@
+.todo{
+  width: 100%;
+  min-height: 100vh;
+  max-height: auto;
+}
+
+.todo-input{
+  border: none;
+  outline: none;
+}
+
+.todo-input-div{
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px orangered;
+}
+
+#textarea{
+  display: none;
+}
+
+.todo-cards{
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px orangered;
+}
+
+.todo-cards-p{
+  text-align: justify;
+  text-justify: inter-word;
+}

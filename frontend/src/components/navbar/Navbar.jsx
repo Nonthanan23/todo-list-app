@@ -29,7 +29,7 @@ const Navbar = () => {
                 <Link className="nav-link active" aria-current="page" to="/About">About Us</Link>
               </li>
               <li className="nav-item mx-2">
-                <Link className="nav-link active" aria-current="page" to="/ToDo">ToDo</Link>
+                <Link className="nav-link active" aria-current="page" to="/Todo">ToDo</Link>
               </li>
               <li className="nav-item mx-2">
                 <Link className="nav-link active btn-nav" aria-current="page" to="/signup">SignUp</Link>
