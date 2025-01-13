@@ -1,8 +1,32 @@
 import React from 'react'
 import './Signup.css'
 import HeadingComp from './HeadingComp'
+import { useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { authAction } from '../../store'
 
 const Signin = () => {
+  const dispatch = useDispatch();
+  const history = useNavigate();
+  const [Inputs, setInputs] = useState({ email: "", password: "" });
+
+  const change = (e) => {
+    const { name, value } = e.target;
+    setInputs({ ...Inputs, [name]: value });
+  }
+
+  const submit = async (e) => {
+    e.preventDefault();
+    await axios.post("http://localhost:3000/api/v1/login", Inputs).then((response) => {
+      sessionStorage.setItem("id ",response.data.others._id);
+      dispatch(authAction.login());
+      history('/todo');
+    })
+  }
+
+
   return (
     <div><div className='signup'>
       <div className='container'>
@@ -15,12 +39,16 @@ const Signin = () => {
               <input className='p-2 my-3 signup-input'
                 type="email"
                 name="email"
-                placeholder='Enter Your Email' />
+                placeholder='Enter Your Email'
+                value={Inputs.email}
+                onChange={change} />
                 <input className='p-2 my-3 signup-input'
                 type="password"
                 name="password"
-                placeholder='Enter Your password' />
-                <button className='p-2 my-3 signup-btn'>Sign In</button>
+                placeholder='Enter Your password'
+                value={Inputs.password}
+                onChange={change} />
+                <button className='p-2 my-3 signup-btn' onClick={submit}>Sign In</button>
             </div>
           </div>
         </div>

@@ -1,8 +1,12 @@
 import React from 'react'
 import './Navbar.css'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const Navbar = () => {
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -31,15 +35,15 @@ const Navbar = () => {
               <li className="nav-item mx-2">
                 <Link className="nav-link active" aria-current="page" to="/Todo">ToDo</Link>
               </li>
-              <li className="nav-item mx-2">
+              {!isLoggedIn && <><li className="nav-item mx-2">
                 <Link className="nav-link active btn-nav" aria-current="page" to="/signup">SignUp</Link>
               </li>
               <li className="nav-item mx-2">
                 <Link className="nav-link active btn-nav" aria-current="page" to="/signin">SignIn</Link>
-              </li>
-              <li className="nav-item mx-2">
+              </li></>}
+              {isLoggedIn && <><li className="nav-item mx-2">
                 <Link className="nav-link active btn-nav" aria-current="page" to="/">Log Out</Link>
-              </li>
+              </li></>}
               {/* <li className="nav-item">
                 <Link className="nav-link active" aria-current="page" to="/"><img className="img-fluid user-png" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png" alt="/" /></Link>
               </li> */}

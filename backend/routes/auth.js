@@ -11,10 +11,10 @@ router.post("/register", async (req, res) => {
     const user = new User({ email, username, password: hashpassword });
 
     await user.save(); // Save the user directly without .then()
-    res.status(200).json({ user: user }); // Send a response
+    res.status(200).json({ message: "User created successfully" }); // Send a response
   } catch (error) {
     // Check for duplicate email or other errors here if needed
-    res.status(400).json({ message: "User already exists" }); // Ensure only one response
+    res.status(200).json({ message: "User already exists" }); // Ensure only one response
   }
 });
 
@@ -26,7 +26,7 @@ router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      return res.status(400).json({ message: "Please Sign Up First" }); // Exit function
+      return res.status(200).json({ message: "Please Sign Up First" }); // Exit function
     }
 
     const isPasswordCorrect = await bcrypt.compare(
@@ -34,13 +34,13 @@ router.post("/login", async (req, res) => {
       user.password
     );
     if (!isPasswordCorrect) {
-      return res.status(400).json({ message: "Wrong Password" }); // Exit function
+      return res.status(200).json({ message: "Wrong Password" }); // Exit function
     }
 
     const { password, ...others } = user._doc;
-    res.status(200).json({ ...others }); // Send successful response
+    res.status(200).json({ others }); // Send successful response
   } catch (error) {
-    res.status(400).json({ message: "An error occurred" }); // General error handling
+    res.status(200).json({ message: "An error occurred" }); // General error handling
   }
 });
 
