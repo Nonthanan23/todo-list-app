@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import './Todo.css';
 import TodoCards from './TodoCards';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Update from './Update';
 
 const Todo = () => {
   const [input, setInput] = useState({ title: '', body: '' });
@@ -15,15 +17,27 @@ const Todo = () => {
 
   const submit = () => {
     if (input.title.trim() === '' || input.body.trim() === '') {
-      alert('Both fields are required!');
+      toast.error('Both fields are required!');
       return;
     }
     setTasks([...tasks, { id: Date.now(), ...input }]);
     setInput({ title: '', body: '' });
+    toast.success('Task added successfully!');
+  };
+
+  const del = (id) => {
+    const updatedTasks = tasks.filter((_, index) => index !== id);
+    setTasks(updatedTasks);
+    toast.info('Task deleted!');
+  };
+
+  const dis = (value) => {
+    document.getElementById('todo-update').style.display = value;
   };
 
   return (
     <div className="todo">
+      <ToastContainer />
       <div className="todo-main container d-flex justify-content-center align-items-center my-4 flex-column">
         <div className="d-flex flex-column todo-input-div w-50 p-3">
           <input
@@ -53,13 +67,16 @@ const Todo = () => {
       <div className="todo-body">
         <div className="container-fluid">
           <div className="row">
-            {tasks.map((item) => (
-              <div key={item.id} className="col-lg-3 mx-5 my-2">
-                <TodoCards title={item.title} body={item.body} />
+            {tasks.map((item, index) => (
+              <div key={index} className="col-lg-3 col-8 mx-5 my-2">
+                <TodoCards title={item.title} body={item.body} id={index} delid={del} display={dis}/>
               </div>
             ))}
           </div>
         </div>
+      </div>
+      <div className="todo-update" id="todo-update">
+        <div className="container update"><Update display={dis} /></div>
       </div>
     </div>
   );
