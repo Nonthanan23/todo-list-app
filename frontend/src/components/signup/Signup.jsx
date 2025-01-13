@@ -2,6 +2,7 @@ import React from 'react'
 import './Signup.css'
 import HeadingComp from './HeadingComp'
 import { useState } from 'react'
+import axios from 'axios'
 
 
 const Signup = () => {
@@ -11,9 +12,11 @@ const Signup = () => {
     setInputs({ ...Inputs, [name]: value });
   }
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    console.log(Inputs);
+    await axios.post("http://localhost:3000/api/v1/register", Inputs).then((response) => {
+      console.log(response);setInputs({ email: '', username: '', password: '' });
+    })
   }
 
   return (
