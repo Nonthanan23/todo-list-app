@@ -2,10 +2,16 @@ import React from 'react'
 import './Navbar.css'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { authActions } from '../../store'
 
 const Navbar = () => {
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
-
+  const dispatch = useDispatch();
+  const logout = () => {
+    sessionStorage.clear("id");
+    dispatch(authActions.logout());
+  }
 
   return (
     <div>
@@ -41,7 +47,7 @@ const Navbar = () => {
               <li className="nav-item mx-2">
                 <Link className="nav-link active btn-nav" aria-current="page" to="/signin">SignIn</Link>
               </li></>}
-              {isLoggedIn && <><li className="nav-item mx-2">
+              {isLoggedIn && <><li className="nav-item mx-2" onClick={logout}>
                 <Link className="nav-link active btn-nav" aria-current="page" to="/">Log Out</Link>
               </li></>}
               {/* <li className="nav-item">

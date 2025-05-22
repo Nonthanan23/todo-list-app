@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Todo.css';
 import TodoCards from './TodoCards';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Update from './Update';
+import axios from 'axios';
+
+let id = localStorage.getItem('id');
 
 const Todo = () => {
   const [input, setInput] = useState({ title: '', body: '' });
@@ -15,14 +18,26 @@ const Todo = () => {
     setInput({ ...input, [name]: value });
   };
 
-  const submit = () => {
-    if (input.title.trim() === '' || input.body.trim() === '') {
+  const submit = async() => {
+    if (input.title === '' || input.body === '') {
       toast.error('Both fields are required!');
-      return;
     }
-    setTasks([...tasks, { id: Date.now(), ...input }]);
-    setInput({ title: '', body: '' });
-    toast.success('Task added successfully!');
+    else {
+      if (id) {
+        await axios.post('http://localhost:3000/api/v2/addTask',{title: input.title, body: input.body, id: id}).then((response) => {
+          console.log(response);
+        });
+        setTasks([...tasks, input ]);
+        setInput({ title: '', body: '' });
+        toast.success('Task added successfully!');
+      }
+      else {
+        setTasks([...tasks, input ]);
+        setInput({ title: '', body: '' });
+        toast.success('Task added successfully!');
+        toast.error('Please Sign In First!');
+      }
+  };
   };
 
   const del = (id) => {
@@ -34,6 +49,26 @@ const Todo = () => {
   const dis = (value) => {
     document.getElementById('todo-update').style.display = value;
   };
+  useEffect(() => {
+  const fetchTasks = async () => {
+    if (!id) {
+      console.error("Session ID is missing");
+      toast.error("Session ID is missing!");
+      return;
+    }
+
+    try {
+      const response = await axios.get(`http://localhost:3000/api/v2/getTasks/${id}`);
+      console.log("Response:", response);
+      setTasks(response.data.list || []);
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+      toast.error("Failed to fetch tasks. Please check the server.");
+    }
+  };
+  fetchTasks();
+}, []);
+
 
   return (
     <div className="todo">

@@ -1,11 +1,11 @@
-import React from 'react'
-import './Signup.css'
-import HeadingComp from './HeadingComp'
-import { useState } from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { authAction } from '../../store'
+import React from 'react';
+import './Signup.css';
+import HeadingComp from './HeadingComp';
+import { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../../store';
 
 const Signin = () => {
   const dispatch = useDispatch();
@@ -20,8 +20,8 @@ const Signin = () => {
   const submit = async (e) => {
     e.preventDefault();
     await axios.post("http://localhost:3000/api/v1/login", Inputs).then((response) => {
-      sessionStorage.setItem("id ",response.data.others._id);
-      dispatch(authAction.login());
+      sessionStorage.setItem("id",response.data.others._id);
+      dispatch(authActions.login());
       history('/todo');
     })
   }
